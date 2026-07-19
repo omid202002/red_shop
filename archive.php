@@ -1,7 +1,7 @@
 <?php
 get_header();
 ?>
-    <section class="pt-[20px] mt-[124px] lg:mt-[200px] max-w-[1250px] mx-auto grid grid-cols-1 sm:grid-cols-2 gap-8 mt-[20px] px-[15px] lg:px-0">
+<section class=" pt-[20px] mt-[124px] lg:mt-[200px] max-w-[1250px] mx-auto grid grid-cols-1 sm:grid-cols-2 gap-8 mt-[20px] px-[15px] lg:px-0">
         <div class="flex flex-col gap-4">
             <div class="flex relative">
             <div>
@@ -123,6 +123,7 @@ get_header();
             
         </div>
     </section>
-<?php
-get_footer();
-?>
+
+    <?php
+    get_footer();
+    ?>
