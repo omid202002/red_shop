@@ -11,7 +11,7 @@ $author_name = get_the_author_meta('display_name' , $author_id);
 ?>
     <section class="max-w-[1250px] mx-auto mt-[124px] lg:mt-[200px] flex flex-col lg:flex-row gap-20">
         <div class="w-full lg:max-w-[66.666667%] flex flex-col gap-7 px-[15px]">
-            <h1 class="w-full lg:w-[800px] text-[24px] font-semibold"> <?php echo $post_title; ?> </h1>
+            <h1 class="w-full lg:w-[800px] text-[24px] font-semibold"><?php echo $post_title; ?></h1>
             <div class="flex lg:hidden justify-center flex-row items-center mx-[20px] text-[11px] font-bold gap-2 text-white">
                     <div class="flex items-center justify-center px-[10px] h-[19px] rounded-[4px] bg-[#007bff]">   
                         تکنولوژی        
@@ -31,21 +31,23 @@ $author_name = get_the_author_meta('display_name' , $author_id);
                 </div>
                 <div class="flex flex-wrap justify-center lg:justify-start items-center gap-1">   
                     <div><img class="rounded-full" width="45" height="45" src="<?php echo THEME_DIR; ?>/src/img/Default_Profile_Picture1.jpg" alt=""></div>
-                    <a class="text-[14px] font-semibold" href="#"><?php echo $author_name ?></a>
+                    <a class="text-[14px] font-semibold" href="#"><?php echo $author_name; ?></a>
                 </div>
                 <div class="flex flex-wrap gap-2 lg:gap-4 text-[14px] font-normal text-[#6f6f6f]">
-                    <p><?php echo $post_date ?></p>
+                    <p><?php echo $post_date; ?> </p>
                     <p>زمان مورد نیاز برای مطالعه: 2 دقیقه</p>
                 </div>
             </div>
-            <?php if($post_thumbnail){?>
-                <img class="w-full h-auto lg:h-[450px] rounded-[4px]" src="<?php echo $post_thumbnail; ?>" alt="<?php echo $post_title; ?>">
+            <?php if($post_thumbnail){ ?>
+                <img class="w-full h-auto lg:h-[450px] rounded-[4px]" src="<?php echo $post_thumbnail; ?>" alt="<?php echo $post_title; ?> ">
             <?php } ?>
             
             <div class="text-[14px] font-normal leading-[28px]">
-                <?php echo get_the_content(); ?>
+                <?php the_content(); ?>
             </div>
-            
+
+
+ 
             <div class="flex gap-2 items-center py-[20px] border-t border-b border-[#c5c5c5] mb-[15px]">
                 <img class="w-[70px] h-[70px] rounded-full" src="<?php echo THEME_DIR; ?>/src/img/profile.jpg" alt="">
                 <p class="text-[#6d6d6d] text-[14px] font-bold">محمود یزدان پناه</p>
@@ -143,25 +145,14 @@ $author_name = get_the_author_meta('display_name' , $author_id);
                     </div>
                 </div>
             </div>
-            <form class="w-full flex flex-col py-8 gap-6">
-                <div class="grid grid-cols-2 gap-6">
-                    <div class="border border-[#d4d4d4] px-[12px] py-[10px] rounded-[5px]">
-                        <input class="outline-none w-full" type="text" placeholder="نام">
-                    </div>
-                    <div class="border border-[#d4d4d4] px-[12px] py-[10px] rounded-[5px]">
-                        <input class="outline-none w-full" type="text" placeholder="ایمیل">
-                    </div>
-                </div>
-                    <div class="border border-[#d4d4d4] px-[12px] py-[10px] rounded-[5px]">
-                        <input class="outline-none w-full" type="text" placeholder="وبسایت">
-                    </div>
-                <textarea class="textArea-root peer border border-[#d4d4d4] px-[12px] py-[10px] rounded-[5px] outline-none" rows="6" dir="rtl" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false" placeholder="دیدگاه"></textarea>
-                <div class="col-span-2 flex w-full justify-start">
-                    <button data-variant="filled" class="px-[35px] bg-red-600 text-white h-[45px] font-bold">
-                        <div class="flex items-center gap-6">ارسال دیدگاه</div>
-                    </button>
-                </div>
-        </form>
+            
+            <section class="container mx-auto">
+                <?php
+                if(comments_open()){
+                    comments_template();
+                }
+                ?>
+            </section>
         </div>
         <div class="w-full lg:max-w-[25%] flex flex-col gap-12 px-[15px]">
             <a href="#" class="w-full lg:w-[290px] h-[311px] border border-[#ede9e9] flex items-center flex-col justify-between rounded-[10px]">
