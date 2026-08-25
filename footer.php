@@ -121,7 +121,9 @@
                                     <span class="text-dark_grey">فروشگاه اینترنتی</span>
                                     <span class="text-[#e63434]">وی‌جی‌نا</span>
                                 </div>
-                                <div class="text-justify text-[11px] text-semi_dark">فروشگاه اینترنتی وی‌جی‌نا به طور رسمی در فروردین ماه ۹۹ با توجه به رشد روزافزون خدمات اینترنتی و دنیای تکنولوژی در جهان امروز و نیاز به کالاهای دیجیتال تاسیس شد. هدف این فروشگاه اینترنتی خدمت‌رسانی و تامین جدیدترین مدل‌ها از معتبرترین برند‌های کالای دیجیتال ، لوازم خانگی و سرگرمی است.</div>
+                                <div class="text-justify text-[11px] text-semi_dark">
+                                    <?php echo get_option("footer_text"); ?>
+                                </div>
                             </div>
                             <div class=" flex w-full flex-row justify-center gap-[20px] px-[10px]">
                                 <div class="relative h-[80px] w-[80px]">
