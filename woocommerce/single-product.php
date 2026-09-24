@@ -3,15 +3,27 @@
 get_header();
 
 $product_id = get_the_ID();
-$product = wc_get_product($product_id);
+$product = wc_get_product( $product_id );
 $product_name = $product->get_name();
-$product_terms = get_the_terms($product_id, 'product_cat');
+$product_terms = get_the_terms( $product_id, 'product_cat' );
 $is_in_stock = $product->is_in_stock();
 $sale_price = $product->get_sale_price();
 $regular_price = $product->get_regular_price();
 if($sale_price){
     $discount_percentage = round(($regular_price - $sale_price) / $regular_price * 100);
-    }
+}
+// product images
+$product_image = $product->get_image_id();
+$product_image_url = wp_get_attachment_url($product_image);
+$product_gallery = $product->get_gallery_image_ids();
+$product_gallery_urls = array();
+if($product_image_url){
+    $product_gallery_urls[] = $product_image_url;
+}
+
+foreach($product_gallery as $gallery_id){
+    $product_gallery_urls[] = wp_get_attachment_url($gallery_id);
+}
 
 ?>
     <div class="w-full">
@@ -23,27 +35,24 @@ if($sale_price){
                             <div class="box w-[350px] xl:w-[400px] gallery">
                               <div class="swiper main-slide-carousel swiper-container relative w-full">
                                 <div class="swiper-wrapper">
-                                  <div class="swiper-slide">
-                                    <div class="block w-full mx-auto h-[450px] rounded-3xl">
-                                      <img src="<?php echo THEME_DIR; ?>/src/img/PrdImages-1.gif" alt="Gallery image" class="gallery-image w-full h-full mx-auto rounded-3xl object-contain"/>
-                                    </div>
-                                  </div>
-                                 
-                                  <div class="swiper-slide">
-                                    <div class="block w-full mx-auto h-[450px] rounded-3xl">
-                                      <img src="<?php echo THEME_DIR; ?>/src/img/PrdImages-2.gif" alt="Gallery image" class="gallery-image w-full h-full mx-auto rounded-3xl object-contain"/>
-                                    </div>
-                                  </div>
-                                  <div class="swiper-slide">
-                                    <div class="block w-full mx-auto h-[450px] rounded-3xl">
-                                      <img src="<?php echo THEME_DIR; ?>/src/img/PrdImages-3.gif" alt="Gallery image" class="gallery-image w-full h-full mx-auto rounded-3xl object-contain"/>
-                                    </div>
-                                  </div>
-                                  <div class="swiper-slide">
-                                    <div class="block w-full mx-auto h-[450px] rounded-3xl">
-                                      <img src="<?php echo THEME_DIR; ?>/src/img/PrdImages-4.gif" alt="Gallery image" class="gallery-image w-full h-full mx-auto rounded-3xl object-contain"/>
-                                    </div>
-                                  </div>
+                                    <?php
+                                    if($product_gallery_urls){
+                                    foreach($product_gallery_urls as $gallery_url){ ?>
+                                        <div class="swiper-slide">
+                                            <div class="block w-full mx-auto h-[450px] rounded-3xl">
+                                            <img src="<?php echo $gallery_url; ?>" alt="Gallery image" class="gallery-image w-full h-full mx-auto rounded-3xl object-contain"/>
+                                            </div>
+                                        </div>
+                                    <?php }
+                                    }else {
+                                        ?>
+                                        <div class="swiper-slide">
+                                            <div class="block w-full mx-auto h-[450px] rounded-3xl">
+                                            <img src="<?php echo THEME_DIR; ?>/src/img/image-placeholder.webp" alt="Gallery image" class="gallery-image w-full h-full mx-auto rounded-3xl object-contain"/>
+                                            </div>
+                                        </div>
+                                        <?php
+                                    } ?>
                                 </div>
                                 <div class="swiper-button-prev"></div>
                                 <div class="swiper-button-next"></div>
@@ -54,18 +63,20 @@ if($sale_price){
                             <div class="lg:w-[300px] xl:w-[390px] overflow-hidden">
                               <div class="nav-for-slider">
                                 <div class="swiper-wrapper flex justify-center md:gap-7 gap-4">
-                                  <div class="swiper-slide thumbs-slide !w-[64px] !h-[64px] p-[5px]">
-                                    <img src="<?php echo THEME_DIR; ?>/src/img/PrdImages-1.gif" alt="Gallery image" class="gallery-image w-full cursor-pointer h-full rounded-2xl border-2 border-gray-200 transition-all duration-500 hover:border-indigo-600 object-cover"/>
-                                  </div>
-                                  <div class="swiper-slide thumbs-slide !w-[64px] !h-[64px] p-[5px]">
-                                    <img src="<?php echo THEME_DIR; ?>/src/img/PrdImages-2.gif" alt="Gallery image" class="gallery-image w-full cursor-pointer h-full rounded-2xl border-2 border-gray-200 transition-all duration-500 hover:border-indigo-600 object-cover"/>
-                                  </div>
-                                  <div class="swiper-slide thumbs-slide !w-[64px] !h-[64px] p-[5px]" >
-                                    <img src="<?php echo THEME_DIR; ?>/src/img/PrdImages-3.gif" alt="Gallery image" class="gallery-image w-full cursor-pointer h-full rounded-2xl border-2 border-gray-200 transition-all duration-500 hover:border-indigo-600 object-cover"/>
-                                  </div>
-                                  <div class="swiper-slide thumbs-slide !w-[64px] !h-[64px] p-[5px]">
-                                    <img src="<?php echo THEME_DIR; ?>/src/img/PrdImages-4.gif" alt="Gallery image" class="gallery-image w-full cursor-pointer h-full rounded-2xl border-2 border-gray-200 transition-all duration-500 hover:border-indigo-600 object-cover"/>
-                                  </div>                   
+                                    <?php 
+                                    if($product_gallery_urls){
+                                    foreach($product_gallery_urls as $gallery_url){ ?>    
+                                        <div class="swiper-slide thumbs-slide !w-[64px] !h-[64px] p-[5px]">
+                                            <img src="<?php echo $gallery_url; ?>" alt="Gallery image" class="gallery-image w-full cursor-pointer h-full rounded-2xl border-2 border-gray-200 transition-all duration-500 hover:border-indigo-600 object-cover"/>
+                                        </div>
+                                    <?php }
+                                    }else {
+                                        ?>
+                                        <div class="swiper-slide thumbs-slide !w-[64px] !h-[64px] p-[5px]">
+                                            <img src="<?php echo THEME_DIR; ?>/src/img/image-placeholder.webp" alt="Gallery image" class="gallery-image w-full cursor-pointer h-full rounded-2xl border-2 border-gray-200 transition-all duration-500 hover:border-indigo-600 object-cover"/>
+                                        </div>
+                                        <?php
+                                    } ?>                 
                                 </div>
                               </div>
                             </div>
@@ -80,13 +91,14 @@ if($sale_price){
             </article>
             <article class="w-[80%] lg:w-[336px] xl:w-[488px] mt-[50px] lg:mt-[220px] flex flex-col gap-6 mx-auto">
                 <div class="flex w-full items-center gap-2">
-                <?php if ($product_terms) {
-                    foreach ($product_terms as $term) { ?> <a href="<?php echo get_term_link($term->term_id); ?>" class="text-[#a4a4a4] text-[18px] font-normal"> <?php echo $term->name; ?> </a>
-                    <?php if($term != end($product_terms)){ ?>
-                        <span class="text-[#a4a4a4] text-[18px] font-normal">|</span>
-                    <?php } ?>
-                    <?php }
-                } ?>
+                    <?php if($product_terms){
+                        foreach($product_terms as $term){ ?>
+                            <a href="<?php echo get_term_link( $term->term_id ); ?>" class="text-[#a4a4a4] text-[18px] font-normal"><?php echo $term->name; ?></a>
+                            <?php if($term != end($product_terms)){ ?>
+                                <span class="text-[#a4a4a4] text-[18px] font-normal">|</span>
+                            <?php } ?>
+                        <?php }
+                    } ?>
                     <!-- <div class="flex items-center gap-2">
                         <svg class="cursor-pointer text-gray-400" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9.97559 16.3191H18.2593C18.6409 16.3191 18.9506 16.0116 18.9506 15.6318V4.36832C18.9506 3.98897 18.6414 3.68103 18.2593 3.68103H9.97559V16.3191Z" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"></path><path d="M9.97506 16.3191H1.69139C1.30978 16.3191 1 16.0116 1 15.6318V4.36832C1 3.98897 1.30928 3.68103 1.69139 3.68103H9.97506V16.3191V16.3191Z" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="4 4"></path><path d="M9.97559 1V19" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"></path></svg>
                         <svg class="cursor-pointer text-transparent" width="23" height="20" viewBox="0 0 23 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M11.3861 19C18.1228 15.7916 21.7722 10.8191 21.7722 7.10662C21.7722 3.39418 19.189 1 16.1696 1C13.1502 1 11.3861 3.32633 11.3861 3.32633C11.3861 3.32633 9.62197 1 6.60258 1C3.5832 1 1 3.38934 1 7.10662C1 10.8239 4.64943 15.7916 11.3861 19Z" stroke="#A4A4A4" stroke-width="1.5" stroke-miterlimit="10" stroke-linejoin="round"></path></svg>
@@ -104,24 +116,21 @@ if($sale_price){
                         <svg class="text-[#e10a0a]" width="16" height="16" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M1.55664 6.89127C1.34781 6.69815 1.46125 6.34902 1.74371 6.31553L5.74609 5.84099C5.86122 5.82734 5.96121 5.75481 6.00977 5.64954L7.69792 1.98963C7.81705 1.73134 8.18425 1.73131 8.30339 1.9896L9.99154 5.64959C10.0401 5.75486 10.1394 5.82735 10.2546 5.841L14.2572 6.31553C14.5396 6.34902 14.653 6.69817 14.4442 6.89129L11.4853 9.62778C11.4002 9.70649 11.3622 9.82381 11.3848 9.93752L12.1701 13.8907C12.2255 14.1697 11.9286 14.3855 11.6804 14.2465L8.16352 12.2779C8.06236 12.2213 7.93914 12.2212 7.83798 12.2778L4.32072 14.2466C4.07252 14.3855 3.77529 14.1697 3.83073 13.8908L4.61625 9.93747C4.63884 9.82377 4.60089 9.70653 4.51578 9.62782L1.55664 6.89127Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
                         <svg class="text-[#e10a0a]" width="16" height="16" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M1.55664 6.89127C1.34781 6.69815 1.46125 6.34902 1.74371 6.31553L5.74609 5.84099C5.86122 5.82734 5.96121 5.75481 6.00977 5.64954L7.69792 1.98963C7.81705 1.73134 8.18425 1.73131 8.30339 1.9896L9.99154 5.64959C10.0401 5.75486 10.1394 5.82735 10.2546 5.841L14.2572 6.31553C14.5396 6.34902 14.653 6.69817 14.4442 6.89129L11.4853 9.62778C11.4002 9.70649 11.3622 9.82381 11.3848 9.93752L12.1701 13.8907C12.2255 14.1697 11.9286 14.3855 11.6804 14.2465L8.16352 12.2779C8.06236 12.2213 7.93914 12.2212 7.83798 12.2778L4.32072 14.2466C4.07252 14.3855 3.77529 14.1697 3.83073 13.8908L4.61625 9.93747C4.63884 9.82377 4.60089 9.70653 4.51578 9.62782L1.55664 6.89127Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
                     </span>
-
                     <?php if($is_in_stock){ ?>
-                        <div class="flex items-center gap-2">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21Z" stroke="#1CB65D" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"></path><path d="M15 10L11 14L9 12" stroke="#1CB65D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-                            <p class="text-[14px] font-bold text-[#27b965]">موجود</p>
-                        </div>
+                    <div class="flex items-center gap-2">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21Z" stroke="#1CB65D" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"></path><path d="M15 10L11 14L9 12" stroke="#1CB65D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                        <p class="text-[14px] font-bold text-[#27b965]">موجود</p>
+                    </div>
                     <?php } ?>
                 </div>
                 <div class="flex flex-col">
                     <?php if($sale_price){ ?>
                     <div class="flex items-center gap-2">
-                        <p class="text-[#a4a4a4]"><span class="line-through ml-2 text-[16px] xl:text-[20px] font-bold"><?php echo number_format($regular_price); ?> <?php echo get_woocommerce_currency_symbol(); ?></span></p>
+                        <p class="text-[#a4a4a4]"><span class="line-through ml-2 text-[16px] xl:text-[20px] font-bold"><?php echo number_format($regular_price); ?></span>تومان</p>
                         <span class="px-[5px] h-[26px] rounded-full bg-[#e10a0a] text-white flex items-center justify-center"><?php echo $discount_percentage; ?>%</span>
                     </div>
-                    <div class="text-[18px] font-bold text-[#e10a0a]"><span class="text-[20px] xl:text-[28px] ml-2"><?php echo number_format($sale_price); ?> <?php echo get_woocommerce_currency_symbol(); ?></span></div>
-                    <?php } else { ?>
-                        <div class="text-[18px] font-bold text-[#e10a0a]"><span class="text-[20px] xl:text-[28px] ml-2"><?php echo number_format($regular_price); ?> <?php echo get_woocommerce_currency_symbol(); ?></span></div>
                     <?php } ?>
+                    <div class="text-[18px] font-bold text-[#e10a0a]"><span class="text-[20px] xl:text-[28px] ml-2"><?php echo $sale_price?number_format($sale_price):number_format($regular_price) ; ?></span>تومان</div>
                 </div>
                 <div class="flex flex-col gap-2">
                     <p class="text-[14px] font-normal text-[#adadad]">نوع گوشی : <span class="text-black mr-1">دو گوشی</span></p>
